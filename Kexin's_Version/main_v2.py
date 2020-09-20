@@ -82,7 +82,7 @@ class Bluetooth:
                 data = raw.split(",")
                 for d in data:
                     d = int(d)
-                # format [x1, x2, y1, y2]
+                # format [front, left, right]
                 newMeasure.append(data)
         return true
 
@@ -165,14 +165,19 @@ class Car:
     # process measurement
     def measurementProcess(self):
         while(len(newMeasure) > 0):
-            # measuring y
-            if turnNum % 2 == 0:
+            # calculate x and y coordinate in cm
+            if turnNum == 0:
+                x = 150 - newMeasure[0][0] - self.LEN / 2
+                y = newMeasure[0][1] + newMeasure[0][2] + self.WID
+            elif turnNum == 1:
+                x = 150 - newMeasure[0][1] - newMeasure[0][2] - self.WID
+                y = 150 - newMeasure[0][0] - self.LEN / 2
+            elif turnNum == 2:
                 x = newMeasure[0][0] + self.LEN / 2
-                y = newMeasure[0][2] + newMeasure[0][3] + self.WID
-            # measuring x
+                y = 150 - newMeasure[0][1] - newMeasure[0][2] - self.WID
             else:
-                x = newMeasure[0][0] + newMeasurement[0][1] + self.LEN / 2
-                y = newMeasure[0][2] + self.WID / 2
+                x = newMeasure[0][1] + newMeasure[0][2] + self.WID
+                y = newMeasure[0][0] + self.LEN / 2
             editObj(x, y)
             newMeasure.pop(0)
                 
@@ -251,4 +256,4 @@ def testB():
         
     
 if __name__ == "__main__":
-    testB()
+    test()
